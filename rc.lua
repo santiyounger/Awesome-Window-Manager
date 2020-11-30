@@ -5,13 +5,7 @@
 
 --]]
 
---[[ SY widget install from
-https://pavelmakhov.com/awesome-wm-widgets/#tabVolumearc_Widget
---]]
---
 -- {{{ Required libraries
---
---
 local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
 
@@ -22,8 +16,7 @@ local wibox         = require("wibox")
 local beautiful     = require("beautiful")
 local naughty       = require("naughty")
 local lain          = require("lain")
-local menubar       = require("menubar")
--- SY menu bar was off by default
+--local menubar       = require("menubar")
 local freedesktop   = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
                       require("awful.hotkeys_popup.keys")
@@ -93,10 +86,10 @@ local themes = {
     "vertex",          -- 10
 }
 
-local chosen_theme = themes[6]
+local chosen_theme = themes[7]
 local modkey       = "Mod4"
 local altkey       = "Mod1"
-local terminal     = "alacritty"
+local terminal     = "urxvtc"
 local vi_focus     = false -- vi-like client focus - https://github.com/lcpz/awesome-copycats/issues/275
 local cycle_prev   = true -- cycle trough all previous client or just the first -- https://github.com/lcpz/awesome-copycats/issues/274
 local editor       = os.getenv("EDITOR") or "vim"
@@ -105,11 +98,9 @@ local browser      = os.getenv("BROWSER") or "firefox"
 local scrlocker    = "slock"
 
 awful.util.terminal = terminal
--- SY added extra tags (there where only 5)
-awful.util.tagnames = { "1", "2", "3", "4", "5", "6", "7" }
+awful.util.tagnames = { "1", "2", "3", "4", "5" }
 awful.layout.layouts = {
--- SY removed floating
-    -- awful.layout.suit.floating,
+    awful.layout.suit.floating,
     awful.layout.suit.tile,
     awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
@@ -250,7 +241,7 @@ screen.connect_signal("arrange", function (s)
     end
 end)
 -- Create a wibox for each screen and add it
--- awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
+awful.screen.connect_for_each_screen(function(s) beautiful.at_screen_connect(s) end)
 -- }}}
 
 -- {{{ Mouse bindings
@@ -262,7 +253,6 @@ root.buttons(my_table.join(
 -- }}}
 
 -- {{{ Key bindings
--- SY start of conflict with parentestis
 globalkeys = my_table.join(
     -- Take a screenshot
     -- https://github.com/lcpz/dots/blob/master/bin/screenshot
@@ -277,10 +267,10 @@ globalkeys = my_table.join(
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description = "show help", group="awesome"}),
     -- Tag browsing
-    awful.key({ modkey,           }, "h",   awful.tag.viewprev,
-              {description = "view previous", group = "santi"}),
-    awful.key({ modkey,           }, "l",  awful.tag.viewnext,
-              {description = "view next", group = "santi"}),
+    awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
+              {description = "view previous", group = "tag"}),
+    awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
+              {description = "view next", group = "tag"}),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
               {description = "go back", group = "tag"}),
 
@@ -367,7 +357,7 @@ globalkeys = my_table.join(
         {description = "go forth", group = "client"}),
 
     -- Show/Hide Wibox
-    awful.key({ modkey }, "t", function ()
+    awful.key({ modkey }, "b", function ()
             for s in screen do
                 s.mywibox.visible = not s.mywibox.visible
                 if s.mybottomwibox then
@@ -375,7 +365,7 @@ globalkeys = my_table.join(
                 end
             end
         end,
-        {description = "toggle wibox", group = "santi"}),
+        {description = "toggle wibox", group = "awesome"}),
 
     -- On the fly useless gaps change
     awful.key({ altkey, "Control" }, "+", function () lain.util.useless_gaps_resize(1) end,
@@ -438,9 +428,8 @@ globalkeys = my_table.join(
     -- Widgets popups
     awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
               {description = "show calendar", group = "widgets"}),
-    -- awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
-    --           {description = "show filesystem", group = "widgets"}),
-    -- SY shortcut conflict with obsidian
+    awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
+              {description = "show filesystem", group = "widgets"}),
     awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
               {description = "show weather", group = "widgets"}),
 
@@ -451,18 +440,6 @@ globalkeys = my_table.join(
               {description = "-10%", group = "hotkeys"}),
 
     -- ALSA volume control
-    --
-    -- SY added extra volume commands for buttons
-    -- forum https://askubuntu.com/questions/359988/how-to-have-a-volume-control-widget-in-awesome-wm
-    --
-    --https://web.archive.org/web/20130928001745/http://awesome.naquadah.org/wiki/Volume_control_and_display
-   awful.key({ }, "XF86AudioRaiseVolume", function ()
-       awful.util.spawn("amixer set Master 3%+") end),
-   awful.key({ }, "XF86AudioLowerVolume", function ()
-       awful.util.spawn("amixer set Master 3%-") end),
-   awful.key({ }, "XF86AudioMute", function ()
-       awful.util.spawn("amixer sset Master toggle") end),
--- SY end of volume keys 
     awful.key({ altkey }, "Up",
         function ()
             os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
@@ -541,8 +518,8 @@ globalkeys = my_table.join(
               {description = "copy gtk to terminal", group = "hotkeys"}),
 
     -- User programs
-    awful.key({ modkey }, "b", function () awful.spawn(browser) end,
-              {description = "run browser", group = "santi"}),
+    awful.key({ modkey }, "q", function () awful.spawn(browser) end,
+              {description = "run browser", group = "launcher"}),
     awful.key({ modkey }, "a", function () awful.spawn(gui_editor) end,
               {description = "run gui editor", group = "launcher"}),
 
@@ -583,7 +560,6 @@ globalkeys = my_table.join(
               {description = "lua execute prompt", group = "awesome"})
     --]]
 )
--- SY end of conflict with parentesis
 
 clientkeys = my_table.join(
     awful.key({ altkey, "Shift"   }, "m",      lain.util.magnify_client,
@@ -594,7 +570,7 @@ clientkeys = my_table.join(
             c:raise()
         end,
         {description = "toggle fullscreen", group = "client"}),
-    awful.key({ modkey,           }, "q",      function (c) c:kill()                         end,
+    awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end,
               {description = "close", group = "client"}),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ,
               {description = "toggle floating", group = "client"}),
@@ -762,12 +738,11 @@ client.connect_signal("request::titlebars", function(c)
         end)
     )
 
-    awful.titlebar(c, {size = dpi(0)}) : setup {
--- SY changed from dpi 16 to 0 to remove top bar title
+    awful.titlebar(c, {size = dpi(16)}) : setup {
         { -- Left
             awful.titlebar.widget.iconwidget(c),
             buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal,
+            layout  = wibox.layout.fixed.horizontal
         },
         { -- Middle
             { -- Title
@@ -800,16 +775,3 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- possible workaround for tag preservation when switching back to default screen:
 -- https://github.com/lcpz/awesome-copycats/issues/251
 -- }}}
---
---
--- Personal  ----------------------------
--- auto start apps 
-awful.spawn.with_shell("compton")
-awful.spawn.with_shell("nitrogen --restore")
-awful.spawn.with_shell("dropbox")
-awful.spawn.with_shell("xfce4-power-manager")
-awful.spawn.with_shell("xbindkeys -p")
--- awful.spawn.with_shell()
--- adding gaps
-beautiful.useless_gap = 8
--- custom keys
