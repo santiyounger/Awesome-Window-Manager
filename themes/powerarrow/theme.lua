@@ -16,6 +16,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow"
+-- SY I can comment the line below to test using nitrogen for wallpapers
 theme.wallpaper                                 = theme.dir .. "/wall.png"
 theme.font                                      = "Terminus 9"
 theme.fg_normal                                 = "#FEFEFE"
@@ -103,8 +104,15 @@ local separators = lain.util.separators
 
 -- Binary clock
 local binclock = require("themes.powerarrow.binclock"){
-    height = dpi(32),
-    show_seconds = true,
+    -- height = dpi(32),
+    height = dpi(30),
+    width = dpi(48),
+    show_seconds = false,
+    --[[ SY testing dot size
+    dotsize = (1),
+ https://git.sitilge.id.lv/sitilge/dotfiles/commit/bdfac4d3edee9c88a7830b73b04917230a66a8be
+ --]]
+-- SY  modfied to show false secs
     color_active = theme.fg_normal,
     color_inactive = theme.bg_focus
 }
@@ -129,8 +137,9 @@ lain.widget.contrib.task.attach(task, {
 task:buttons(my_table.join(awful.button({}, 1, lain.widget.contrib.task.prompt)))
 
 -- Scissors (xsel copy and paste)
-local scissors = wibox.widget.imagebox(theme.widget_scissors)
-scissors:buttons(my_table.join(awful.button({}, 1, function() awful.spawn.with_shell("xsel | xsel -i -b") end)))
+--SY commented scissors
+-- local scissors = wibox.widget.imagebox(theme.widget_scissors)
+-- scissors:buttons(my_table.join(awful.button({}, 1, function() awful.spawn.with_shell("xsel | xsel -i -b") end)))
 
 -- Mail IMAP check
 --[[ commented because it needs to be set before use
@@ -352,6 +361,7 @@ function theme.at_screen_connect(s)
             s.mypromptbox,
             spr,
         },
+        -- SY task list
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
@@ -373,14 +383,18 @@ function theme.at_screen_connect(s)
             arrow(theme.bg_normal, "#343434"),
             wibox.container.background(wibox.container.margin(wibox.widget { mailicon, theme.mail and theme.mail.widget, layout = wibox.layout.align.horizontal }, dpi(4), dpi(7)), "#343434"),
             arrow("#343434", theme.bg_normal),
-            wibox.container.background(wibox.container.margin(wibox.widget { mpdicon, theme.mpd.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(6)), theme.bg_focus),
+            -- - SY turned off
+            -- wibox.container.background(wibox.container.margin(wibox.widget { mpdicon, theme.mpd.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(6)), theme.bg_focus),
             arrow(theme.bg_normal, "#343434"),
             wibox.container.background(wibox.container.margin(task, dpi(3), dpi(7)), "#343434"),
             arrow("#343434", "#777E76"),
-            wibox.container.background(wibox.container.margin(wibox.widget { memicon, mem.widget, layout = wibox.layout.align.horizontal }, dpi(2), dpi(3)), "#777E76"),
+            -- - SY turned off memory icon
+            -- wibox.container.background(wibox.container.margin(wibox.widget { memicon, mem.widget, layout = wibox.layout.align.horizontal }, dpi(2), dpi(3)), "#777E76"),
             arrow("#777E76", "#4B696D"),
+            -- - SY turned on CPU
             wibox.container.background(wibox.container.margin(wibox.widget { cpuicon, cpu.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(4)), "#4B696D"),
             arrow("#4B696D", "#4B3B51"),
+	    -- SY temperature widget
             wibox.container.background(wibox.container.margin(wibox.widget { tempicon, temp.widget, layout = wibox.layout.align.horizontal }, dpi(4), dpi(4)), "#4B3B51"),
             arrow("#4B3B51", "#CB755B"),
             wibox.container.background(wibox.container.margin(wibox.widget { fsicon, theme.fs and theme.fs.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(3)), "#CB755B"),
