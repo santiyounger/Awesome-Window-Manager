@@ -43,12 +43,18 @@ end
 local function factory(args)
     local args = args or {}
 
-    binclock.width          = args.width or dpi(42)
+    -- binclock.width          = args.width or dpi(42)
+    binclock.width          = args.width or dpi(22)
+    -- binclock.height         = args.height or dpi(18)
     binclock.height         = args.height or dpi(18)
     binclock.show_seconds   = args.show_seconds or false
-    binclock.color_active   = args.color_active or "#CCCCCC"
+    -- binclock.color_active   = args.color_active or "#CCCCCC"
+    binclock.color_active   = "#1F89AA"
+    -- binclock.color_inactive = args.color_inactive or "#444444"
     binclock.color_inactive = args.color_inactive or "#444444"
-    binclock.dotsize        = math.floor(binclock.height / 5)
+    -- binclock.dotsize        = math.floor(binclock.height / 5)
+    binclock.dotsize        = math.floor(binclock.height / 8)
+    -- binclock.step           = math.floor(binclock.dotsize / 3)
     binclock.step           = math.floor(binclock.dotsize / 3)
 
     binclock.widget = wibox.widget {
