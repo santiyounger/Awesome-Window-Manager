@@ -98,7 +98,7 @@ local browser      = os.getenv("BROWSER") or "firefox"
 local scrlocker    = "slock"
 
 awful.util.terminal = terminal
-awful.util.tagnames = { "1", "2", "3", "4", "5" }
+awful.util.tagnames = { "1", "2", "3", "4", "5", "6", "7" }
 awful.layout.layouts = {
     -- awful.layout.suit.floating,
     -- awful.layout.suit.tile,
@@ -289,10 +289,11 @@ globalkeys = my_table.join(
     ),
 
     -- Non-empty tag browsing
-    awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end,
-              {description = "view  previous nonempty", group = "tag"}),
-    awful.key({ altkey }, "Right", function () lain.util.tag_view_nonempty(1) end,
-              {description = "view  previous nonempty", group = "tag"}),
+    -- SY conflict with obsidian
+    -- awful.key({ altkey }, "Left", function () lain.util.tag_view_nonempty(-1) end,
+    --           {description = "view  previous nonempty", group = "tag"}),
+    -- awful.key({ altkey }, "Right", function () lain.util.tag_view_nonempty(1) end,
+    --           {description = "view  previous nonempty", group = "tag"}),
 
 --- bookmark
 
@@ -376,17 +377,40 @@ globalkeys = my_table.join(
     -- Widgets popups
     awful.key({ altkey, }, "c", function () if beautiful.cal then beautiful.cal.show(7) end end,
               {description = "show calendar", group = "widgets"}),
-    awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
-              {description = "show filesystem", group = "widgets"}),
+	      -- SY conflicts with obsidian
+    -- awful.key({ altkey, }, "h", function () if beautiful.fs then beautiful.fs.show(7) end end,
+    --           {description = "show filesystem", group = "widgets"}),
     awful.key({ altkey, }, "w", function () if beautiful.weather then beautiful.weather.show(7) end end,
               {description = "show weather", group = "widgets"}),
 
     -- Brightness
-    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
+    -- SY default if xbacklight was working
+    -- awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xbacklight -inc 10") end,
+    --           {description = "+10%", group = "hotkeys"}),
+    -- awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
+    --           {description = "-10%", group = "hotkeys"}),
+    
+    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xrandr --output 'eDP1' --brightness 1") end,
               {description = "+10%", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
+    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xrandr --output 'eDP1' --brightness 0.51") end,
               {description = "-10%", group = "hotkeys"}),
+-- SY brightness defined in bash aliases
+-- "xrandr --output 'eDP1' --brightness 0.3"
+-- "xrandr --output 'eDP1' --brightness 0.4"
+-- "xrandr --output 'eDP1' --brightness 0.45"
+-- "xrandr --output 'eDP1' --brightness 0.5"
+-- "xrandr --output 'eDP1' --brightness 0.7"
+-- "xrandr --output 'eDP1' --brightness 1"
+-- "xrandr --output 'eDP1' --brightness 1.5"
 
+	      -- SY volume keys
+-- https://web.archive.org/web/20130928001745/http://awesome.naquadah.org/wiki/Volume_control_and_display
+   awful.key({ }, "XF86AudioRaiseVolume", function ()
+       awful.util.spawn("amixer set Master 3%+") end),
+   awful.key({ }, "XF86AudioLowerVolume", function ()
+       awful.util.spawn("amixer set Master 3%-") end),
+   awful.key({ }, "XF86AudioMute", function ()
+       awful.util.spawn("amixer sset Master toggle") end),
     -- ALSA volume control
     awful.key({ altkey }, "Up",
         function ()
@@ -731,7 +755,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 awful.spawn.with_shell("compton")
 awful.spawn.with_shell("nitrogen --restore")
 awful.spawn.with_shell("dropbox")
-awful.spawn.with_shell("xfce4-power-manager")
+-- awful.spawn.with_shell("xfce4-power-manager")
 awful.spawn.with_shell("xfce4-clipman")
 awful.spawn.with_shell("xbindkeys -p")
 awful.spawn.with_shell("espanso restart")

@@ -4,7 +4,7 @@
      github.com/lcpz
 
 --]]
-
+local volumearc_widget = require("awesome-wm-widgets.volumearc-widget.volumearc")
 local gears = require("gears")
 local lain  = require("lain")
 local awful = require("awful")
@@ -401,14 +401,23 @@ function theme.at_screen_connect(s)
             arrow("#CB755B", "#8DAA9A"),
             wibox.container.background(wibox.container.margin(wibox.widget { baticon, bat.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(3)), "#8DAA9A"),
             arrow("#8DAA9A", "#C0C0A2"),
+	    -- wifi
             wibox.container.background(wibox.container.margin(wibox.widget { nil, neticon, net.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(3)), "#C0C0A2"),
-            arrow("#C0C0A2", "#777E76"),
-            wibox.container.background(wibox.container.margin(binclock.widget, dpi(4), dpi(8)), "#777E76"),
-            arrow("#777E76", "alpha"),
+            arrow("#C0C0A2", "#000"),
+            wibox.container.background(wibox.container.margin(binclock.widget, dpi(4), dpi(8)), "#000"),
+            arrow("#000", "alpha"),
+
+-- SY added volume arc widget (added comma to thing above)
+volumearc_widget({
+    main_color = '#1CB8BC',
+    mute_color = '#A83A0A',
+    thickness = 5,
+    height = 25,
+}),
+-- end of volumearc
             --]]
             s.mylayoutbox,
         },
     }
 end
-
 return theme
