@@ -17,7 +17,7 @@ local my_table = awful.util.table or gears.table -- 4.{0,1} compatibility
 local theme                                     = {}
 theme.dir                                       = os.getenv("HOME") .. "/.config/awesome/themes/powerarrow"
 -- SY I can comment the line below to test using nitrogen for wallpapers
-theme.wallpaper                                 = theme.dir .. "/wall.png"
+-- theme.wallpaper                                 = theme.dir .. "/wall.png"
 theme.font                                      = "Terminus 9"
 theme.fg_normal                                 = "#FEFEFE"
 theme.fg_focus                                  = "#32D6FF"
@@ -105,7 +105,8 @@ local separators = lain.util.separators
 -- Binary clock
 local binclock = require("themes.powerarrow.binclock"){
     -- height = dpi(32),
-    height = dpi(30),
+    -- height = dpi(30),
+    height = dpi(28),
     width = dpi(48),
     show_seconds = false,
     --[[ SY testing dot size
@@ -128,13 +129,14 @@ theme.cal = lain.widget.cal({
     }
 })
 
--- Taskwarrior
-local task = wibox.widget.imagebox(theme.widget_task)
-lain.widget.contrib.task.attach(task, {
-    -- do not colorize output
-    show_cmd = "task | sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'"
-})
-task:buttons(my_table.join(awful.button({}, 1, lain.widget.contrib.task.prompt)))
+-- SY disabled taskwarrior widget
+-- -- Taskwarrior
+-- local task = wibox.widget.imagebox(theme.widget_task)
+-- lain.widget.contrib.task.attach(task, {
+--     -- do not colorize output
+--     show_cmd = "task | sed -r 's/\\x1B\\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g'"
+-- })
+-- task:buttons(my_table.join(awful.button({}, 1, lain.widget.contrib.task.prompt)))
 
 -- Scissors (xsel copy and paste)
 --SY commented scissors
@@ -403,9 +405,12 @@ function theme.at_screen_connect(s)
             arrow("#8DAA9A", "#C0C0A2"),
 	    -- wifi
             wibox.container.background(wibox.container.margin(wibox.widget { nil, neticon, net.widget, layout = wibox.layout.align.horizontal }, dpi(3), dpi(3)), "#C0C0A2"),
-            arrow("#C0C0A2", "#000"),
-            wibox.container.background(wibox.container.margin(binclock.widget, dpi(4), dpi(8)), "#000"),
-            arrow("#000", "alpha"),
+            -- arrow("#C0C0A2", "#000"),
+            -- wibox.container.background(wibox.container.margin(binclock.widget, dpi(4), dpi(8)), "#000"),
+            -- arrow("#000", "alpha"),
+            arrow("#C0C0A2", "#7F7F7F"),
+            wibox.container.background(wibox.container.margin(binclock.widget, dpi(4), dpi(8)), "#7F7F7F"),
+            arrow("#7F7F7F", "alpha"),
 
 -- SY added volume arc widget (added comma to thing above)
 volumearc_widget({

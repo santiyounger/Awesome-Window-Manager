@@ -49,13 +49,14 @@ local function factory(args)
     binclock.height         = args.height or dpi(18)
     binclock.show_seconds   = args.show_seconds or false
     -- binclock.color_active   = args.color_active or "#CCCCCC"
-    binclock.color_active   = "#1F89AA"
+    -- binclock.color_active   = "#1F89AA"
+    binclock.color_active   = "#fff"
     -- binclock.color_inactive = args.color_inactive or "#444444"
-    binclock.color_inactive = args.color_inactive or "#444444"
+    binclock.color_inactive = "#292929"
     -- binclock.dotsize        = math.floor(binclock.height / 5)
     binclock.dotsize        = math.floor(binclock.height / 8)
     -- binclock.step           = math.floor(binclock.dotsize / 3)
-    binclock.step           = math.floor(binclock.dotsize / 3)
+    binclock.step           = math.floor(binclock.dotsize / 2)
 
     binclock.widget = wibox.widget {
         fit = function(self, context, width, height)
