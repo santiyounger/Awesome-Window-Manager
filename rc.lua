@@ -390,9 +390,9 @@ globalkeys = my_table.join(
     -- awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xbacklight -dec 10") end,
     --           {description = "-10%", group = "hotkeys"}),
     
-    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xrandr --output 'eDP1' --brightness 1") end,
+    awful.key({ }, "XF86MonBrightnessUp", function () os.execute("xrandr --output 'eDP-1' --brightness 1") end,
               {description = "+10%", group = "hotkeys"}),
-    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xrandr --output 'eDP1' --brightness 0.51") end,
+    awful.key({ }, "XF86MonBrightnessDown", function () os.execute("xrandr --output 'eDP-1' --brightness 0.51") end,
               {description = "-10%", group = "hotkeys"}),
 -- SY brightness defined in bash aliases
 -- "xrandr --output 'eDP1' --brightness 0.3"
